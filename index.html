@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AgroVista | Diagnóstico aéreo agrícola</title>
+<style>
+:root{--green:#176b45;--lime:#b9df75;--ink:#18332a;--muted:#61756c;--paper:#f4f8f3;--card:#fff;--line:#dce8dd;--blue:#286c91}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+header{background:linear-gradient(125deg,#103e2c,#1d744b);color:white;padding:30px 20px 36px}
+.wrap{max-width:1180px;margin:auto}nav{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}.brand{font-size:1.25rem;font-weight:800;letter-spacing:.3px}.brand span{color:var(--lime)}nav a{color:#effff3;text-decoration:none;margin-left:16px;font-size:.94rem}
+.hero{padding:38px 0 10px;max-width:800px}.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-weight:700;font-size:.76rem;color:#d5f3b0}.hero h1{font-size:clamp(2rem,5vw,3.5rem);line-height:1.04;margin:12px 0}.hero p{font-size:1.08rem;color:#e4f4e9;max-width:680px}
+main{padding:28px 20px 55px}.section-head{display:flex;justify-content:space-between;gap:20px;align-items:end;flex-wrap:wrap;margin:10px 0 16px}.section-head h2{margin:0;font-size:1.6rem}.section-head p{margin:5px 0 0;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 5px 20px #173c2710}.span-4{grid-column:span 4}.span-5{grid-column:span 5}.span-7{grid-column:span 7}.span-8{grid-column:span 8}.span-12{grid-column:span 12}
+label{font-weight:700;font-size:.91rem;display:block;margin-bottom:6px}input,select,button{font:inherit}input[type=text],input[type=date],select,input[type=file]{width:100%;padding:11px 12px;border:1px solid #cbdccf;border-radius:10px;background:white;color:var(--ink)}input[type=file]{font-size:.9rem} .field{margin:12px 0}
+.help{font-size:.85rem;color:var(--muted);margin:6px 0 0}.btn{border:0;border-radius:11px;padding:11px 16px;font-weight:750;cursor:pointer;background:var(--green);color:white}.btn.secondary{background:#e7f2e6;color:var(--green);border:1px solid #c9e0cb}.btn:disabled{opacity:.55;cursor:not-allowed}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.pill{display:inline-flex;padding:5px 10px;border-radius:999px;background:#e6f4df;color:#28623e;font-size:.8rem;font-weight:800}.warning{background:#fff7df;border:1px solid #efdfaa;border-radius:12px;padding:12px 14px;color:#66521d;font-size:.9rem;margin:12px 0}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.metric{background:#f2f8f1;border:1px solid #e0ebdf;border-radius:12px;padding:12px}.metric b{font-size:1.4rem;display:block}.metric small{color:var(--muted)}
+.preview{background:#f0f4f0;border:1px dashed #c6d7c9;border-radius:14px;min-height:270px;display:flex;align-items:center;justify-content:center;overflow:hidden}.preview canvas{max-width:100%;height:auto;display:block}.empty{text-align:center;padding:28px;color:var(--muted)}.legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:.82rem}.legend span{display:inline-flex;align-items:center;gap:5px}.dot{width:12px;height:12px;border-radius:3px;display:inline-block}
+.small-title{font-size:1.03rem;margin:0 0 10px}.index-desc{font-size:.9rem;color:var(--muted);margin:5px 0 12px}
+footer{background:#103e2c;color:#dcefe2;padding:24px 20px;font-size:.9rem}footer a{color:#d5f3b0}
+.status{font-size:.88rem;color:var(--muted);margin-top:10px;min-height:1.3em}
+@media(max-width:850px){.span-4,.span-5,.span-7,.span-8{grid-column:span 12}.metrics{grid-template-columns:1fr}.hero{padding-top:25px}nav a{margin-left:0;margin-right:12px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="wrap">
+  <nav><div class="brand">🌿 Agro<span>Vista</span></div><div><a href="#analisis">Analizar imagen</a><a href="#indices">Índices</a><a href="#metodo">Metodología</a></div></nav>
+  <div class="hero"><div class="eyebrow">Agricultura de precisión · Teledetección</div><h1>Observa tu cultivo desde otra perspectiva.</h1><p>Explora imágenes aéreas y genera mapas exploratorios de vigor vegetal para mandarina, caña de azúcar y zarzamora.</p><span class="pill">Procesamiento local en tu navegador</span></div>
+ </div>
+</header>
+<main class="wrap">
+ <section id="analisis">
+  <div class="section-head"><div><h2>Centro de análisis</h2><p>Configura el lote, carga una imagen y calcula el índice compatible.</p></div></div>
+  <div class="grid">
+   <div class="card span-4">
+    <h3 class="small-title">1. Datos del vuelo</h3>
+    <div class="field"><label for="farm">Nombre del predio o lote</label><input id="farm" type="text" placeholder="Ej. Parcela Norte"></div>
+    <div class="field"><label for="crop">Cultivo</label><select id="crop"><option>Mandarina</option><option>Caña de azúcar</option><option>Zarzamora</option></select></div>
+    <div class="field"><label for="date">Fecha de captura</label><input id="date" type="date"></div>
+    <div class="field"><label for="index">Índice a calcular</label><select id="index"><option value="VARI">VARI — imagen RGB</option><option value="NDVI">NDVI — rojo + infrarrojo cercano</option><option value="NDRE">NDRE — red edge + infrarrojo cercano</option></select></div>
+    <div class="warning"><b>Importante:</b> el resultado depende de las bandas y de la calibración de la imagen. Una fotografía RGB común no permite calcular NDVI ni NDRE reales.</div>
+    <h3 class="small-title">2. Carga de bandas</h3>
+    <div id="rgbFields">
+     <div class="field"><label for="rgb">Imagen RGB (JPG/PNG)</label><input id="rgb" type="file" accept="image/*"><p class="help">Para VARI. Usa una imagen aérea con buena iluminación.</p></div>
+    </div>
+    <div id="ndviFields" hidden>
+     <div class="field"><label for="red">Banda roja (exportada en escala de grises)</label><input id="red" type="file" accept="image/*"></div>
+     <div class="field"><label for="nir">Banda NIR (exportada en escala de grises)</label><input id="nir" type="file" accept="image/*"></div>
+     <p class="help">Ambas imágenes deben estar alineadas, con el mismo tamaño y valores de reflectancia comparables.</p>
+    </div>
+    <div id="ndreFields" hidden>
+     <div class="field"><label for="edge">Banda red edge (escala de grises)</label><input id="edge" type="file" accept="image/*"></div>
+     <div class="field"><label for="nir2">Banda NIR (escala de grises)</label><input id="nir2" type="file" accept="image/*"></div>
+     <p class="help">Ambas imágenes deben estar alineadas y calibradas. Las imágenes en gris se interpretan por intensidad del canal rojo.</p>
+    </div>
+    <div class="actions"><button class="btn" id="calculate">Calcular índice</button><button class="btn secondary" id="demo">Ver demostración</button></div>
+    <div class="status" id="status" role="status" aria-live="polite"></div>
+   </div>
+   <div class="card span-8">
+    <div class="section-head"><div><h3 class="small-title">Mapa del índice</h3><p id="mapSubtitle">El resultado aparecerá aquí.</p></div><button id="downloadPng" class="btn secondary" disabled>Descargar mapa PNG</button></div>
+    <div class="preview" id="preview"><div class="empty">🌱<br><b>Tu mapa aparecerá aquí</b><br><small>Carga datos propios o pulsa “Ver demostración”.</small></div></div>
+    <div class="legend" id="legend"></div>
+    <div class="metrics"><div class="metric"><small>Índice</small><b id="metricIndex">—</b><small id="metricName">Sin calcular</small></div><div class="metric"><small>Promedio de píxeles válidos</small><b id="metricMean">—</b><small>Valor exploratorio</small></div><div class="metric"><small>Área analizada</small><b id="metricPixels">—</b><small>Píxeles de la imagen</small></div></div>
+    <div class="actions"><button id="report" class="btn secondary" disabled>Descargar ficha de análisis (.txt)</button></div>
+   </div>
+  </div>
+ </section>
+ <section id="indices" style="margin-top:36px">
+  <div class="section-head"><div><h2>Índices disponibles</h2><p>Cada índice necesita bandas distintas.</p></div></div>
+  <div class="grid">
+   <article class="card span-4"><span class="pill">RGB</span><h3>VARI</h3><p class="index-desc">Índice visible resistente a variaciones atmosféricas en ciertas condiciones. Puede estimarse con imágenes RGB.</p><code>VARI = (G − R) / (G + R − B)</code></article>
+   <article class="card span-4"><span class="pill">Rojo + NIR</span><h3>NDVI</h3><p class="index-desc">Indicador común de verdor y actividad vegetal; no equivale por sí solo a un diagnóstico agronómico.</p><code>NDVI = (NIR − R) / (NIR + R)</code></article>
+   <article class="card span-4"><span class="pill">Red edge + NIR</span><h3>NDRE</h3><p class="index-desc">Puede ayudar a observar variaciones de vegetación, especialmente en doseles densos, si el sensor captura red edge.</p><code>NDRE = (NIR − RE) / (NIR + RE)</code></article>
+  </div>
+ </section>
+ <section id="metodo" style="margin-top:36px">
+  <div class="section-head"><div><h2>Cómo interpretar los resultados</h2><p>Los mapas sirven como apoyo para inspección; no sustituyen el muestreo en campo.</p></div></div>
+  <div class="card">
+   <ul>
+    <li><b>Planifica el vuelo:</b> intenta mantener iluminación, altura y condiciones similares entre fechas.</li>
+    <li><b>Prepara las bandas:</b> para NDVI y NDRE usa bandas exportadas y alineadas desde un flujo fotogramétrico o sensor multiespectral. Una imagen coloreada no es una banda calibrada.</li>
+    <li><b>Compara zonas y fechas:</b> revisa patrones espaciales y cambios relativos; valida anomalías con recorridos, suelo, riego y estado fitosanitario.</li>
+    <li><b>Evita conclusiones automáticas:</b> estrés hídrico, nutrición, sombra, suelo expuesto y diferencias de iluminación pueden producir señales parecidas.</li>
+   </ul>
+   <p class="help">Demostración: los datos sintéticos solo ilustran el funcionamiento visual de la página; no representan un predio real ni deben usarse para tomar decisiones agrícolas.</p>
+  </div>
+ </section>
+</main>
+<footer><div class="wrap"><b>AgroVista</b> · Prototipo educativo para agricultura de precisión. Los archivos se procesan en el navegador y no se suben a un servidor. <br>Para uso operativo, documenta sensor, calibración, resolución, fecha y método de procesamiento.</div></footer>
+<script>
+const $ = id => document.getElementById(id);
+let lastResult=null, currentCanvas=null;
+const today = new Date(); $('date').value = new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);
+function syncFields(){const v=$('index').value;$('rgbFields').hidden=v!=='VARI';$('ndviFields').hidden=v!=='NDVI';$('ndreFields').hidden=v!=='NDRE';$('status').textContent='';}
+$('index').addEventListener('change',syncFields);
+function loadImage(file){return new Promise((resolve,reject)=>{if(!file)return reject(new Error('Selecciona todos los archivos requeridos.'));const url=URL.createObjectURL(file);const img=new Image();img.onload=()=>{URL.revokeObjectURL(url);resolve(img)};img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('No se pudo abrir una de las imágenes.'))};img.src=url;});}
+function imageData(img,w,h){const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d',{willReadFrequently:true});x.drawImage(img,0,0,w,h);return x.getImageData(0,0,w,h).data;}
+function colorMap(v){if(!Number.isFinite(v))return [0,0,0,0];let t=Math.max(0,Math.min(1,(v+1)/2));let stops=[[0,[156,45,48]],[.25,[232,151,67]],[.5,[245,231,125]],[.75,[128,190,91]],[1,[22,107,69]]];for(let i=1;i<stops.length;i++){if(t<=stops[i][0]){let [a,ca]=stops[i-1],[b,cb]=stops[i],f=(t-a)/(b-a);return [0,1,2].map(k=>Math.round(ca[k]+(cb[k]-ca[k])*f)).concat(255)}}return [22,107,69,255]}
+function renderMap(values,w,h,title,demo=false){const c=document.createElement('canvas');c.width=w;c.height=h;const ctx=c.getContext('2d');const im=ctx.createImageData(w,h);let sum=0,n=0;for(let i=0;i<values.length;i++){let v=values[i];const rgba=colorMap(v);im.data[i*4]=rgba[0];im.data[i*4+1]=rgba[1];im.data[i*4+2]=rgba[2];im.data[i*4+3]=rgba[3];if(Number.isFinite(v)){sum+=v;n++}}ctx.putImageData(im,0,0);$('preview').innerHTML='';$('preview').appendChild(c);c.style.width='100%';c.style.height='auto';currentCanvas=c;$('mapSubtitle').textContent=title+(demo?' · DEMOSTRACIÓN SINTÉTICA':'');$('legend').innerHTML='<span><i class="dot" style="background:#9c2d30"></i>Valores bajos</span><span><i class="dot" style="background:#e89743"></i>Bajos-medios</span><span><i class="dot" style="background:#f5e77d"></i>Intermedios</span><span><i class="dot" style="background:#80be5b"></i>Medios-altos</span><span><i class="dot" style="background:#166b45"></i>Altos</span>';const mean=n?sum/n:NaN;$('metricIndex').textContent=$('index').value;$('metricName').textContent=demo?'Ejemplo, no dato real':'Imagen procesada';$('metricMean').textContent=Number.isFinite(mean)?mean.toFixed(3):'—';$('metricPixels').textContent=(w*h).toLocaleString('es-MX');$('downloadPng').disabled=false;$('report').disabled=false;lastResult={index:$('index').value,mean,w,h,demo,crop:$('crop').value,farm:$('farm').value||'Sin especificar',date:$('date').value||'Sin especificar'};}
+async function calculate(){const idx=$('index').value;$('status').textContent='Procesando imagen…';try{let img1,img2,w,h,a,b,c,d,values=[];if(idx==='VARI'){img1=await loadImage($('rgb').files[0]);w=Math.min(img1.naturalWidth,800);h=Math.max(1,Math.round(img1.naturalHeight*w/img1.naturalWidth));a=imageData(img1,w,h);for(let i=0;i<a.length;i+=4){let r=a[i]/255,g=a[i+1]/255,bl=a[i+2]/255,den=g+r-bl;values.push(Math.abs(den)<1e-6?NaN:(g-r)/den)}}else{const f1=idx==='NDVI'?$('red').files[0]:$('edge').files[0],f2=idx==='NDVI'?$('nir').files[0]:$('nir2').files[0];img1=await loadImage(f1);img2=await loadImage(f2);if(img1.naturalWidth!==img2.naturalWidth||img1.naturalHeight!==img2.naturalHeight)throw new Error('Las dos bandas deben tener exactamente el mismo tamaño y estar alineadas.');w=Math.min(img1.naturalWidth,800);h=Math.max(1,Math.round(img1.naturalHeight*w/img1.naturalWidth));a=imageData(img1,w,h);b=imageData(img2,w,h);for(let i=0;i<a.length;i+=4){let first=a[i]/255, nir=b[i]/255,den=nir+first;values.push(Math.abs(den)<1e-6?NaN:(nir-first)/den)}}renderMap(values,w,h,idx+' calculado desde imagen');$('status').textContent='Listo. Revisa el mapa y valida el resultado en campo.';}catch(e){$('status').textContent=e.message||'No fue posible procesar la imagen.'}}
+function demo(){const idx=$('index').value,w=240,h=150,values=[];for(let y=0;y<h;y++)for(let x=0;x<w;x++){let v=.25+.55*Math.sin(x/31)*Math.cos(y/24)+.12*Math.sin((x+y)/11);if(x>145&&y>45&&y<115)v-=.45;values.push(Math.max(-.9,Math.min(.9,v)))}renderMap(values,w,h,idx+' de ejemplo',true);$('status').textContent='Demostración generada. No corresponde a datos de un cultivo real.'}
+$('calculate').addEventListener('click',calculate);$('demo').addEventListener('click',demo);
+$('downloadPng').addEventListener('click',()=>{if(!currentCanvas)return;const a=document.createElement('a');a.download='AgroVista_'+$('index').value+'_mapa.png';a.href=currentCanvas.toDataURL('image/png');a.click()});
+$('report').addEventListener('click',()=>{if(!lastResult)return;const r=lastResult;const txt=`AGROVISTA — FICHA DE ANÁLISIS\nPredio: ${r.farm}\nCultivo: ${r.crop}\nFecha: ${r.date}\nÍndice: ${r.index}\nPromedio de píxeles válidos: ${Number.isFinite(r.mean)?r.mean.toFixed(5):'no disponible'}\nDimensiones procesadas: ${r.w} x ${r.h}\nTipo: ${r.demo?'DEMONSTRACIÓN SINTÉTICA — NO USAR PARA DECISIONES':'Imagen cargada por el usuario'}\n\nNota: el índice es exploratorio. Confirma los patrones con datos calibrados y observación de campo.`;const blob=new Blob([txt],{type:'text/plain;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='AgroVista_ficha.txt';a.click();URL.revokeObjectURL(a.href)});
+</script>
+</body>
+</html>
